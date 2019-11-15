@@ -1,0 +1,25 @@
+from flask import Flask, redirect, url_for, request
+
+def encryptor(p, key):
+    enc_p = len(p)*key
+    return str(enc_p)
+
+
+app = Flask(__name__)
+
+@app.route('/success/<password>')
+def success(password):
+   return 'Your encrypted password is %s' % password
+
+@app.route('/login',methods = ['POST', 'GET'])
+
+def login():
+    if request.method == 'POST':
+        password = request.form['nm']
+        password = encryptor(password, 10)
+        return redirect(url_for('success',password = password))
+
+
+if __name__ == '__main__':
+   app.run(debug = True)
+
